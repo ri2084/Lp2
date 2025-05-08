@@ -1,0 +1,294 @@
+
+
+
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <vector>
+using namespace std;
+
+#define MAX 10
+
+class Graph
+{
+    int v;                        // Number of vertices
+    int e;                        // Number of edges
+    int graph[MAX][MAX] = {0};    // Adjacency matrix for graph representation
+
+public:
+
+    int getVertices() { return v; }
+
+    Graph()
+    {
+        v = 0;
+        e = 0;
+    }
+
+    void takeInput()
+    {
+        cout << "Enter no. of Vertices: ";
+        cin >> v;
+        cout << "Enter no. of Edges: ";
+        cin >> e;
+
+        for (int i = 0; i < e; i++)
+        {
+            int x, y;
+            cout << "Enter Vertices of edge " << i + 1 << ": ";
+            cin >> x >> y;
+            graph[x - 1][y - 1] = 1;
+            graph[y - 1][x - 1] = 1;
+        }
+    }
+
+    void printGraph()
+    {
+        cout << "Graph Matrix: " << endl;
+        for (int i = 0; i < v; i++)
+        {
+            for (int j = 0; j < v; j++)
+            {
+                cout << graph[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+
+    void BFS(int x);
+    void DFSIterative(int x);
+    void DFSRecursive(int x, int s, vector<bool> &visited, bool &found);
+    void LimitedDFS(int x, int depthLimit);
+    void LimitedBFS(int x, int depthLimit);
+};
+
+void Graph::BFS(int x)
+{
+    int s;
+    cout << "Enter source Vertex: ";
+    cin >> s;
+
+    if (s == x)
+    {
+        cout << "Found!" << endl;
+        return;
+    }
+
+    queue<int> q;
+    vector<bool> visited(v, false);
+
+    q.push(s);
+    visited[s - 1] = true;
+
+    while (!q.empty())
+    {
+        int a = q.front();
+        q.pop();
+
+        if (a == x)
+        {
+            cout << "Found " << x << " using BFS!" << endl;
+            return;
+        }
+
+        for (int i = 0; i < v; i++)  // Simple for loop syntax
+        {
+            if (graph[a - 1][i] == 1 && !visited[i])
+            {
+                visited[i] = true;
+                q.push(i + 1);
+            }
+        }
+    }
+    cout << "Element not found using BFS!" << endl;
+}
+
+void Graph::DFSIterative(int x)
+{
+    int s;
+    cout << "Enter source Vertex: ";
+    cin >> s;
+
+    stack<int> st;
+    vector<bool> visited(v, false);
+
+    st.push(s);
+
+    while (!st.empty())
+    {
+        int a = st.top();
+        st.pop();
+
+        if (!visited[a - 1])
+        {
+            visited[a - 1] = true;
+            cout << a << " ";
+
+            if (a == x)
+            {
+                cout << "Found " << x << " using Iterative DFS!" << endl;
+                return;
+            }
+
+            for (int i = v - 1; i >= 0; i--)  // Simple for loop syntax
+            {
+                if (graph[a - 1][i] == 1 && !visited[i])
+                {
+                    st.push(i + 1);
+                }
+            }
+        }
+    }
+    cout << "Element not found using Iterative DFS!" << endl;
+}
+
+void Graph::DFSRecursive(int x, int s, vector<bool> &visited, bool &found)
+{
+    visited[s - 1] = true;
+    cout << s << " ";
+
+    if (s == x)
+    {
+        cout << "Found " << x << " using Recursive DFS!" << endl;
+        found = true;
+        return;
+    }
+
+    for (int i = 0; i < v; i++)  // Simple for loop syntax
+    {
+        if (graph[s - 1][i] == 1 && !visited[i])
+        {
+            DFSRecursive(x, i + 1, visited, found);
+            if (found)
+                return;
+        }
+    }
+}
+
+void Graph::LimitedDFS(int x, int depthLimit)
+{
+    int s;
+    cout << "Enter source Vertex: ";
+    cin >> s;
+
+    stack<pair<int, int>> st; // Pair: <node, depth>
+    vector<bool> visited(v, false);
+
+    st.push(make_pair(s, 0));
+
+    while (!st.empty())
+    {
+        pair<int, int> top = st.top();
+        int node = top.first;
+        int depth = top.second;
+        st.pop();
+
+        if (!visited[node - 1])
+        {
+            visited[node - 1] = true;
+            cout << node << " ";
+
+            if (node == x)
+            {
+                cout << "Found " << x << " using Limited DFS!" << endl;
+                return;
+            }
+
+            if (depth < depthLimit)
+            {
+                for (int i = v - 1; i >= 0; i--)  // Simple for loop syntax
+                {
+                    if (graph[node - 1][i] == 1 && !visited[i])
+                    {
+                        st.push(make_pair(i + 1, depth + 1));
+                    }
+                }
+            }
+        }
+    }
+    cout << "Element not found using Limited DFS!" << endl;
+}
+
+int main()
+{
+    Graph G;
+    int choice;
+
+    while (true)
+    {
+        cout << "\nMenu:" << endl;
+        cout << "1. Input Graph" << endl;
+        cout << "2. Print Graph" << endl;
+        cout << "3. BFS" << endl;
+        cout << "4. Iterative DFS" << endl;
+        cout << "5. Recursive DFS" << endl;
+        cout << "6. Limited DFS" << endl;
+        cout << "7. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            G.takeInput();
+            break;
+        case 2:
+            G.printGraph();
+            break;
+        case 3:
+        {
+            int x;
+            cout << "Enter element to search using BFS: ";
+            cin >> x;
+            G.BFS(x);
+            break;
+        }
+        case 4:
+        {
+            int x;
+            cout << "Enter element to search using Iterative DFS: ";
+            cin >> x;
+            G.DFSIterative(x);
+            break;
+        }
+        case 5:
+        {
+            int x, s;
+            cout << "Enter element to search using Recursive DFS: ";
+            cin >> x;
+            cout << "Enter source Vertex: ";
+            cin >> s;
+            vector<bool> visited(G.getVertices(), false);
+            bool found = false;
+            G.DFSRecursive(x, s, visited, found);
+            if (!found)
+                cout << "Element not found using Recursive DFS!" << endl;
+            break;
+        }
+        case 6:
+        {
+            int x, depthLimit;
+            cout << "Enter element to search using Limited DFS: ";
+            cin >> x;
+            cout << "Enter depth limit: ";
+            cin >> depthLimit;
+            G.LimitedDFS(x, depthLimit);
+            break;
+        }
+        case 7:
+            cout << "Exiting." << endl;
+            return 0;
+        default:
+            cout << "Invalid choice!" << endl;
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
