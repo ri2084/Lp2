@@ -1,0 +1,15 @@
+public class FibonacciSeries {
+    public static List<Integer> generateFibonacci(Integer n) {
+        List<Integer> series = new List<Integer>();
+        Integer a = 0, b = 1;
+        for (Integer i = 0; i < n; i++) {
+            series.add(a);
+            Integer temp = a + b;
+            a = b;
+            b = temp;
+        }
+        return series;
+    }
+}
+
+//System.debug(FibonacciSeries.generateFibonacci(10));
