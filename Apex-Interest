@@ -1,0 +1,18 @@
+public class InterestCalculator {
+
+    public static Decimal simpleInterest(Decimal p, Decimal r, Decimal t) {
+        return (p * r * t) / 100;
+    }
+
+    public static Decimal compoundInterest(Decimal p, Decimal r, Decimal t, Integer n) {
+        // Convert all necessary values to Double for accurate power calculation
+        Double base = 1 + (r.doubleValue() / (n * 100.0));
+        Double exponent = n * t;
+        Double compound = p.doubleValue() * Math.pow(base, exponent);
+        
+        return Decimal.valueOf(compound) - p;
+    }
+}
+
+//System.debug(InterestCalculator.simpleInterest(1000,5,2));
+//System.debug(InterestCalculator.compoundInterest(1000,5,2,1));
