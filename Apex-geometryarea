@@ -1,0 +1,11 @@
+public class GeometryArea {
+    public static Decimal areaOfCircle(Decimal radius) {
+        return Math.PI * radius * radius;
+    }
+    public static Decimal areaOfRectangle(Decimal length, Decimal width) {
+        return length * width;
+    }
+}
+
+//System.debug(GeometryArea.areaOfCircle(5));
+//System.debug(GeometryArea.areaOfRectangle(4,6));
