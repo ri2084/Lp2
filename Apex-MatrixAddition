@@ -1,0 +1,35 @@
+public class MatrixOperations {
+    public static List<List<Integer>> addMatrices(List<List<Integer>> A, List<List<Integer>> B) {
+        if (A.size() != B.size()) {
+            throw new IllegalArgumentException('Matrices must have the same number of rows.');
+        }
+
+        List<List<Integer>> result = new List<List<Integer>>();
+
+        for (Integer i = 0; i < A.size(); i++) {
+            if (A[i].size() != B[i].size()) {
+                throw new IllegalArgumentException('Matrices must have the same number of columns in every row.');
+            }
+
+            List<Integer> row = new List<Integer>();
+            for (Integer j = 0; j < A[i].size(); j++) {
+                row.add(A[i][j] + B[i][j]);
+            }
+            result.add(row);
+        }
+
+        return result;
+    }
+}
+
+/*
+List<List<Integer>> A = new List<List<Integer>>();
+A.add(new List<Integer>{1, 2});
+A.add(new List<Integer>{3, 4});
+
+List<List<Integer>> B = new List<List<Integer>>();
+B.add(new List<Integer>{5, 6});
+B.add(new List<Integer>{7, 8});
+
+System.debug(MatrixOperations.addMatrices(A, B));  // Output: ((6, 8), (10, 12))
+*/
