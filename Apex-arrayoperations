@@ -1,0 +1,15 @@
+public class ArrayOperations {
+    public static List<Integer> addArrays(List<Integer> a, List<Integer> b) {
+        if (a.size() != b.size()) {
+            throw new IllegalArgumentException('Array sizes must match');
+        }
+
+        List<Integer> result = new List<Integer>();
+        for (Integer i = 0; i < a.size(); i++) {
+            result.add(a[i] + b[i]);
+        }
+        return result;
+    }
+}
+
+//System.debug(ArrayOperations.addArrays(new List<Integer>{1,2,3}, new List<Integer>{4,5,6)));
